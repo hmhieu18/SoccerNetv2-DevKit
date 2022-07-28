@@ -107,18 +107,18 @@ def train(dataloader,
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            for (feat, label) in zip(feats, labels):
+            # for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
-                feat = feat.cuda()
-                label = label.cuda()
+                feats = feats.cuda()
+                labels = labels.cuda()
                 # compute output
-                output = model(feat)
+                output = model(feats)
 
                 # hand written NLL criterion
-                loss = criterion(label, output)
+                loss = criterion(labels, output)
 
                 # measure accuracy and record loss
-                losses.update(loss.item(), feat.size(0))
+                losses.update(loss.item(), feats.size(0))
 
                 if train:
                     # compute gradient and do SGD step
@@ -157,11 +157,11 @@ def test(dataloader, model, model_name):
         for i, (feats, labels) in t:
             # measure data loading time
 
-            print("labels: ", labels.shape)
-            print("feats: ", feats.shape)
-            for (feat, label) in zip(feats, labels):
+                print("labels: ", labels.shape)
+                print("feats: ", feats.shape)
+            # for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
-                feat = feat.cuda()
+                feats = feats.cuda()
                 # labels = labels.cuda()
 
                 # print(feats.shape)
@@ -169,9 +169,9 @@ def test(dataloader, model, model_name):
                 # print(feats.shape)
 
                 # compute output
-                output = model(feat)
+                output = model(feats)
 
-                all_labels.append(label.detach().numpy())
+                all_labels.append(labels.detach().numpy())
                 all_outputs.append(output.cpu().detach().numpy())
 
 
@@ -185,12 +185,12 @@ def test(dataloader, model, model_name):
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-    print("all_labels: ", np.array(all_labels).shape)
-    print("all_outputs: ", np.array(all_outputs).shape)
+    print("all_labels: ", np.concatenate(all_labels).shape)
+    print("all_outputs: ", np.concatenate(all_outputs).shape)
     AP = []
     for i in range(1, dataloader.dataset.num_classes+1):
         AP.append(average_precision_score(np.concatenate(all_labels)
-                                          [i], np.concatenate(all_outputs)[i]))
+                                          [:, i], np.concatenate(all_outputs)[:, i]))
 
     # t.set_description()
     # print(AP)
