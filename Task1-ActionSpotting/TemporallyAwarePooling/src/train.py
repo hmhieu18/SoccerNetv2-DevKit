@@ -156,29 +156,30 @@ def test(dataloader, model, model_name):
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            data_time.update(time.time() - end)
-            feats = feats.cuda()
-            # labels = labels.cuda()
+            for (feat, label) in zip(feats, labels):
+                data_time.update(time.time() - end)
+                feat = feat.cuda()
+                # labels = labels.cuda()
 
-            # print(feats.shape)
-            # feats=feats.unsqueeze(0)
-            # print(feats.shape)
+                # print(feats.shape)
+                # feats=feats.unsqueeze(0)
+                # print(feats.shape)
 
-            # compute output
-            output = model(feats)
+                # compute output
+                output = model(feat)
 
-            all_labels.append(labels.detach().numpy())
-            all_outputs.append(output.cpu().detach().numpy())
+                all_labels.append(label.detach().numpy())
+                all_outputs.append(output.cpu().detach().numpy())
 
-            batch_time.update(time.time() - end)
-            end = time.time()
+                batch_time.update(time.time() - end)
+                end = time.time()
 
-            desc = f'Test (cls): '
-            desc += f'Time {batch_time.avg:.3f}s '
-            desc += f'(it:{batch_time.val:.3f}s) '
-            desc += f'Data:{data_time.avg:.3f}s '
-            desc += f'(it:{data_time.val:.3f}s) '
-            t.set_description(desc)
+                desc = f'Test (cls): '
+                desc += f'Time {batch_time.avg:.3f}s '
+                desc += f'(it:{batch_time.val:.3f}s) '
+                desc += f'Data:{data_time.avg:.3f}s '
+                desc += f'(it:{data_time.val:.3f}s) '
+                t.set_description(desc)
 
     AP = []
     for i in range(1, dataloader.dataset.num_classes+1):
