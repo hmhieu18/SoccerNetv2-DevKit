@@ -53,8 +53,8 @@ def main(args):
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
         dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
-        dataset_Valid_metric = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
-                                              version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+        # dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
+        #                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
     dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,
                                          version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
 
@@ -83,7 +83,7 @@ def main(args):
                                                  batch_size=args.batch_size, shuffle=False,
                                                  num_workers=args.max_num_worker, pin_memory=True)
 
-        val_metric_loader = torch.utils.data.DataLoader(dataset_Valid_metric,
+        val_metric_loader = torch.utils.data.DataLoader(dataset_Valid,
                                                         batch_size=args.batch_size, shuffle=False,
                                                         num_workers=args.max_num_worker, pin_memory=True)
 
@@ -104,7 +104,7 @@ def main(args):
                 max_epochs=args.max_epochs, evaluation_frequency=args.evaluation_frequency)
 
     # Free up some RAM memory
-    del dataset_Train, dataset_Valid, dataset_Valid_metric, dataset_Test
+    del dataset_Train, dataset_Valid, dataset_Valid, dataset_Test
     del train_loader, val_loader, val_metric_loader
 
     # For the best model only
