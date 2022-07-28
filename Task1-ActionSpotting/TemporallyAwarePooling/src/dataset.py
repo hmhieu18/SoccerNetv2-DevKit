@@ -88,8 +88,8 @@ class SoccerNetClips(Dataset):
                 self.path, game, "2_" + self.features))
             feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
 
-            feat_half1 = padding(feat_half1, (5600, feat_half1.shape[1]))
-            feat_half2 = padding(feat_half2, (5600, feat_half2.shape[1]))
+            feat_half1 = padding(feat_half1, (5600, feat_half1.shape[1])).astype(np.float32)
+            feat_half2 = padding(feat_half2, (5600, feat_half2.shape[1])).astype(np.float32)
 
             feat_half1 = feats2clip(torch.from_numpy(
                 feat_half1), stride=self.window_size_frame, clip_length=self.window_size_frame)
@@ -153,7 +153,7 @@ class SoccerNetClips(Dataset):
             self.game_labels.append(label_half1)
             self.game_labels.append(label_half2)
 
-        self.game_feats = np.concatenate(self.game_feats)
+        # self.game_feats = np.concatenate(self.game_feats)
         self.game_labels = np.concatenate(self.game_labels)
 
     def __getitem__(self, index):
@@ -167,7 +167,7 @@ class SoccerNetClips(Dataset):
         """
         # print("index", index)
         # print("game_feats", self.game_feats[index].shape)
-        return self.game_feats[index, :, :], self.game_labels[index, :]
+        return self.game_feats[index], self.game_labels[index, :]
 
     def __len__(self):
         return len(self.game_feats)
