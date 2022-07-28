@@ -174,6 +174,7 @@ def test(dataloader, model, model_name):
                 all_labels.append(label.detach().numpy())
                 all_outputs.append(output.cpu().detach().numpy())
 
+
                 batch_time.update(time.time() - end)
                 end = time.time()
 
