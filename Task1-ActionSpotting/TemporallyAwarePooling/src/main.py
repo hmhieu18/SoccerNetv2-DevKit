@@ -11,6 +11,7 @@ from dataset import SoccerNetClips, SoccerNetClipsTesting  # ,SoccerNetClipsOld
 from model import Model
 from train import trainer, test, testSpotting
 from loss import NLLLoss
+from SoccerNet.Downloader import getListGames
 
 
 def main(args):
@@ -19,9 +20,24 @@ def main(args):
     for arg in vars(args):
         logging.info(arg.rjust(15) + " : " + str(getattr(args, arg)))
     # load list games from npy
+    if(args.train_list_games is not None):
+        train_list = getListGames(['train'])
+    if(args.test_list_games is not None):
+        test_list = getListGames(['test'])
+    if(args.val_list_games is not None):
+        val_list = getListGames(['val'])
+        
     train_list = np.load(args.train_list)
     test_list = np.load(args.test_list)
     val_list = np.load(args.val_list)
+    percent = args.percent
+    # random select 100 games from train_list
+    train_list_length = len(train_list)
+    train_list = train_list[np.random.choice(train_list.shape[0], int(train_list_length*percent), replace=False)]
+    test_list_length = len(test_list)
+    test_list = test_list[np.random.choice(test_list.shape[0], int(test_list_length*percent), replace=False)]
+    val_list_length = len(val_list)
+    val_list = val_list[np.random.choice(val_list.shape[0], int(val_list_length*percent), replace=False)]
 
     # create dataset
     if not args.test_only:
@@ -185,6 +201,15 @@ if __name__ == '__main__':
     # parser.add_argument('--logging_dir',       required=False, type=str,   default="log", help='Where to log' )
     parser.add_argument('--loglevel',   required=False,
                         type=str,   default='INFO', help='logging level')
+    parser.add_argument('--train_list', required=False,
+                        type=str,   default="", help='train list location')
+    parser.add_argument('--valid_list', required=False,
+                        type=str,   default="", help='valid list location')
+    parser.add_argument('--test_list', required=False,
+                        type=str,   default="", help='test list location')
+    parser.add_argument('--percent', required=False, type=float,
+                        default=1.0,     help='percent of data to use')
+    
 
     args = parser.parse_args()
 
