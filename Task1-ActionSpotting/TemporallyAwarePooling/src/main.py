@@ -20,13 +20,13 @@ def main(args):
     for arg in vars(args):
         logging.info(arg.rjust(15) + " : " + str(getattr(args, arg)))
     # load list games from npy
-    if(args.train_list_games is not None):
+    if(args.train_list is not None):
         train_list = getListGames(['train'])
-    if(args.test_list_games is not None):
+    if(args.test_list is not None):
         test_list = getListGames(['test'])
-    if(args.val_list_games is not None):
+    if(args.val_list is not None):
         val_list = getListGames(['val'])
-        
+
     train_list = np.load(args.train_list)
     test_list = np.load(args.test_list)
     val_list = np.load(args.val_list)
