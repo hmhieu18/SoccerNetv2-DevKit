@@ -104,7 +104,7 @@ def main(args):
                 max_epochs=args.max_epochs, evaluation_frequency=args.evaluation_frequency)
 
     # Free up some RAM memory
-    del dataset_Train, dataset_Valid, dataset_Valid, dataset_Test
+    del dataset_Train, dataset_Valid, dataset_Test
     del train_loader, val_loader, val_metric_loader
 
     # For the best model only
