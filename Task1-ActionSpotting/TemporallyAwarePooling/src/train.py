@@ -107,15 +107,15 @@ def train(dataloader,
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            for feat in feats:
+            for (feat, label) in zip(feats, label):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
-                labels = labels.cuda()
+                label = label.cuda()
                 # compute output
                 output = model(feat)
 
                 # hand written NLL criterion
-                loss = criterion(labels, output)
+                loss = criterion(label, output)
 
                 # measure accuracy and record loss
                 losses.update(loss.item(), feat.size(0))
