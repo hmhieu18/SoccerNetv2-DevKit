@@ -25,7 +25,7 @@ def main(args):
     if(args.test_list is not None):
         test_list = getListGames(['test'])
     if(args.valid_list is not None):
-        val_list = getListGames(['val'])
+        val_list = getListGames(['valid'])
 
     train_list = np.load(args.train_list)
     test_list = np.load(args.test_list)
