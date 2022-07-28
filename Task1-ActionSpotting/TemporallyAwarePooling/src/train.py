@@ -107,40 +107,39 @@ def train(dataloader,
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            for feat in feats:
-                print("feat shape: ", feat.shape)
-                data_time.update(time.time() - end)
-                feat = feat.cuda()
-                labels = labels.cuda()
-                # compute output
-                output = model(feat)
+            print("i, (feats, labels): ", i, (feats.shape, labels.shape))
+            data_time.update(time.time() - end)
+            feats = feats.cuda()
+            labels = labels.cuda()
+            # compute output
+            output = model(feats)
 
-                # hand written NLL criterion
-                loss = criterion(labels, output)
+            # hand written NLL criterion
+            loss = criterion(labels, output)
 
-                # measure accuracy and record loss
-                losses.update(loss.item(), feat.size(0))
+            # measure accuracy and record loss
+            losses.update(loss.item(), feats.size(0))
 
-                if train:
-                    # compute gradient and do SGD step
-                    optimizer.zero_grad()
-                    loss.backward()
-                    optimizer.step()
+            if train:
+                # compute gradient and do SGD step
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
 
-                # measure elapsed time
-                batch_time.update(time.time() - end)
-                end = time.time()
+            # measure elapsed time
+            batch_time.update(time.time() - end)
+            end = time.time()
 
-                if train:
-                    desc = f'Train {epoch}: '
-                else:
-                    desc = f'Evaluate {epoch}: '
-                desc += f'Time {batch_time.avg:.3f}s '
-                desc += f'(it:{batch_time.val:.3f}s) '
-                desc += f'Data:{data_time.avg:.3f}s '
-                desc += f'(it:{data_time.val:.3f}s) '
-                desc += f'Loss {losses.avg:.4e} '
-                t.set_description(desc)
+            if train:
+                desc = f'Train {epoch}: '
+            else:
+                desc = f'Evaluate {epoch}: '
+            desc += f'Time {batch_time.avg:.3f}s '
+            desc += f'(it:{batch_time.val:.3f}s) '
+            desc += f'Data:{data_time.avg:.3f}s '
+            desc += f'(it:{data_time.val:.3f}s) '
+            desc += f'Loss {losses.avg:.4e} '
+            t.set_description(desc)
 
     return losses.avg
 
