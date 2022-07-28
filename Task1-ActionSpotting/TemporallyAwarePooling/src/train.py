@@ -151,12 +151,12 @@ def test(dataloader, model, model_name):
     model.eval()
 
     end = time.time()
-    AP = []
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
             all_labels = []
             all_outputs = []
+            print("labels: ", labels.shape)
             for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
@@ -182,9 +182,10 @@ def test(dataloader, model, model_name):
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-            for i in range(1, dataloader.dataset.num_classes+1):
-                AP.append(average_precision_score(np.concatenate(all_labels)
-                                                [:, i], np.concatenate(all_outputs)[:, i]))
+    AP = []
+    for i in range(1, dataloader.dataset.num_classes+1):
+        AP.append(average_precision_score(np.concatenate(all_labels)
+                                          [:, i], np.concatenate(all_outputs)[:, i]))
 
     # t.set_description()
     # print(AP)
