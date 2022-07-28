@@ -157,6 +157,7 @@ def test(dataloader, model, model_name):
             all_labels = []
             all_outputs = []
             print("labels: ", labels.shape)
+            print("feats: ", feats.shape)
             for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
