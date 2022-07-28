@@ -107,7 +107,7 @@ def train(dataloader,
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            for (feat, label) in zip(feats, label):
+            for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
                 label = label.cuda()
