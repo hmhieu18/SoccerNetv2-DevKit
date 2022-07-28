@@ -153,8 +153,8 @@ class SoccerNetClips(Dataset):
             self.game_labels.append(label_half1)
             self.game_labels.append(label_half2)
 
-        self.game_feats = np.concatenate(self.game_feats)
-        self.game_labels = np.concatenate(self.game_labels)
+        # self.game_feats = np.concatenate(self.game_feats)
+        # self.game_labels = np.concatenate(self.game_labels)
 
     def __getitem__(self, index):
         """
@@ -167,8 +167,8 @@ class SoccerNetClips(Dataset):
         """
         # print("index", index)
         # print("game_feats", self.game_feats[index].shape)
-        # return self.game_feats[index], self.game_labels[index, :]
-        return self.game_feats[index, :, :], self.game_labels[index, :]
+        return self.game_feats[index], self.game_labels[index]
+        # return self.game_feats[index, :, :], self.game_labels[index, :]
 
     def __len__(self):
         return len(self.game_feats)

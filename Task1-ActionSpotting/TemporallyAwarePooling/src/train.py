@@ -107,18 +107,18 @@ def train(dataloader,
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
         for i, (feats, labels) in t:
             # measure data loading time
-            # for (feat, label) in zip(feats, labels):
+            for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
-                feats = feats.cuda()
-                labels = labels.cuda()
+                feat = feat.cuda()
+                label = label.cuda()
                 # compute output
-                output = model(feats)
+                output = model(feat)
 
                 # hand written NLL criterion
-                loss = criterion(labels, output)
+                loss = criterion(label, output)
 
                 # measure accuracy and record loss
-                losses.update(loss.item(), feats.size(0))
+                losses.update(loss.item(), feat.size(0))
 
                 if train:
                     # compute gradient and do SGD step
@@ -157,21 +157,21 @@ def test(dataloader, model, model_name):
         for i, (feats, labels) in t:
             # measure data loading time
 
-                print("labels: ", labels.shape)
-                print("feats: ", feats.shape)
-            # for (feat, label) in zip(feats, labels):
+            print("labels: ", labels.shape)
+            print("feats: ", feats.shape)
+            for (feat, label) in zip(feats, labels):
                 data_time.update(time.time() - end)
-                feats = feats.cuda()
+                feat = feat.cuda()
                 # labels = labels.cuda()
 
-                # print(feats.shape)
-                # feats=feats.unsqueeze(0)
-                # print(feats.shape)
+                # print(feat.shape)
+                # feat=feat.unsqueeze(0)
+                # print(feat.shape)
 
                 # compute output
-                output = model(feats)
+                output = model(feat)
 
-                all_labels.append(labels.detach().numpy())
+                all_labels.append(label.detach().numpy())
                 all_outputs.append(output.cpu().detach().numpy())
 
 
