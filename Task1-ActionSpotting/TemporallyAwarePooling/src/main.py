@@ -22,14 +22,18 @@ def main(args):
     # load list games from npy
     if(args.train_list is not None):
         train_list = getListGames(['train'])
+    else:
+        train_list = np.load(args.train_list)
+
     if(args.test_list is not None):
         test_list = getListGames(['test'])
+    else:
+        test_list = np.load(args.test_list)
     if(args.valid_list is not None):
         val_list = getListGames(['valid'])
+    else:
+        val_list = np.load(args.valid_list)
 
-    train_list = np.load(args.train_list)
-    test_list = np.load(args.test_list)
-    val_list = np.load(args.val_list)
     percent = args.percent
     # random select 100 games from train_list
     train_list_length = len(train_list)
