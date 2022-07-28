@@ -129,7 +129,7 @@ class SoccerNetClips(Dataset):
             self.game_labels.append(label_half2)
 
         # self.game_feats = np.concatenate(self.game_feats)
-        # self.game_labels = np.concatenate(self.game_labels)
+        self.game_labels = np.concatenate(self.game_labels)
 
 
 
