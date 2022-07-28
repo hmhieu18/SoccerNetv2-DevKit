@@ -184,8 +184,8 @@ def test(dataloader, model, model_name):
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-    print("all_labels: ", len(all_labels))
-    print("all_outputs: ", len(all_outputs))
+    print("all_labels: ", np.array(all_labels).shape)
+    print("all_outputs: ", np.array(all_outputs).shape)
     AP = []
     for i in range(1, dataloader.dataset.num_classes+1):
         AP.append(average_precision_score(np.concatenate(all_labels)
