@@ -108,6 +108,7 @@ def train(dataloader,
         for i, (feats, labels) in t:
             # measure data loading time
             for feat in feats:
+                print("feat shape: ", feat.shape)
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
                 labels = labels.cuda()
