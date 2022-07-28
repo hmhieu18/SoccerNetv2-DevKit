@@ -166,7 +166,8 @@ class SoccerNetClips(Dataset):
             clip_targets (np.array): clip of targets for the spotting.
         """
         print("index", index)
-        return self.game_feats[index, :], self.game_labels[index, :]
+        print("game_feats", self.game_feats[index].shape)
+        return self.game_feats[index], self.game_labels[index, :]
 
     def __len__(self):
         return len(self.game_feats)
