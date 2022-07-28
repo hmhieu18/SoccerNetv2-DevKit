@@ -44,9 +44,9 @@ def feats2clip(feats, stride, clip_length, padding = "replicate_last", off=0):
 
 class SoccerNetClips(Dataset):
     def __init__(self, path, features="ResNET_PCA512.npy", split=["train"], version=1, 
-                framerate=2, window_size=15):
+                framerate=2, window_size=15, listGames=None,):
         self.path = path
-        self.listGames = getListGames(split)
+        self.listGames = listGames
         self.features = features
         self.window_size_frame = window_size*framerate
         self.version = version
