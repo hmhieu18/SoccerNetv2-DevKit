@@ -38,11 +38,14 @@ def main(args):
     percent = args.percent
     # random select 100 games from train_list
     train_list_length = len(train_list)
-    train_list = train_list[np.random.choice(train_list.shape[0], int(train_list_length*percent), replace=False)]
+    train_list = train_list[np.random.choice(
+        train_list.shape[0], int(train_list_length*percent), replace=False)]
     test_list_length = len(test_list)
-    test_list = test_list[np.random.choice(test_list.shape[0], int(test_list_length*percent), replace=False)]
+    test_list = test_list[np.random.choice(
+        test_list.shape[0], int(test_list_length*percent), replace=False)]
     val_list_length = len(val_list)
-    val_list = val_list[np.random.choice(val_list.shape[0], int(val_list_length*percent), replace=False)]
+    val_list = val_list[np.random.choice(
+        val_list.shape[0], int(val_list_length*percent), replace=False)]
 
     # create dataset
     if not args.test_only:
@@ -111,8 +114,8 @@ def main(args):
 
     # test on multiple splits [test/challenge]
     for split in args.split_test:
-        dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=[
-                                             split], version=args.version, framerate=args.framerate, window_size=args.window_size)
+        dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,
+                                             version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
 
         test_loader = torch.utils.data.DataLoader(dataset_Test,
                                                   batch_size=1, shuffle=False,
@@ -214,7 +217,6 @@ if __name__ == '__main__':
                         type=str,   default="", help='test list location')
     parser.add_argument('--percent', required=False, type=float,
                         default=1.0,     help='percent of data to use')
-    
 
     args = parser.parse_args()
 
