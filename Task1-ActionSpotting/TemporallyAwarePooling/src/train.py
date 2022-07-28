@@ -182,9 +182,9 @@ def test(dataloader, model, model_name):
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-        for i in range(1, dataloader.dataset.num_classes+1):
-            AP.append(average_precision_score(np.concatenate(all_labels)
-                                            [:, i], np.concatenate(all_outputs)[:, i]))
+            for i in range(1, dataloader.dataset.num_classes+1):
+                AP.append(average_precision_score(np.concatenate(all_labels)
+                                                [:, i], np.concatenate(all_outputs)[:, i]))
 
     # t.set_description()
     # print(AP)
