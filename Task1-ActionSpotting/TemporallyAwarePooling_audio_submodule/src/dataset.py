@@ -177,6 +177,9 @@ class SoccerNetClips(Dataset):
         """
         # print("index", index)
         # print("game_feats", self.game_feats[index].shape)
+        print(self.game_audio_feats_files[index], np.load(self.game_audio_feats_files[index]).shape)
+        print(self.game_feats_files[index], np.load(self.game_feats_files[index]).shape)
+        
         return np.load(self.game_feats_files[index]), np.load(self.game_audio_feats_files[index]), self.game_labels[index]
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
