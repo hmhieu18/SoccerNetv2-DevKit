@@ -60,7 +60,7 @@ def padding(feats, shape):
 
 
 class SoccerNetClips(Dataset):
-    def __init__(self, visual_path, audio_path, visual_features="ResNET_PCA512.npy", audio_feaures="224ppyAudioAnalysis.npy", split=["train"], version=1,
+    def __init__(self, visual_path, audio_path, visual_features="ResNET_PCA512.npy", audio_features="224ppyAudioAnalysis.npy", split=["train"], version=1,
                  framerate=2, window_size=15, listGames=None, ):
         self.visual_path = visual_path
         self.audio_path = audio_path
@@ -68,7 +68,7 @@ class SoccerNetClips(Dataset):
         self.listGames = listGames
 
         self.visual_features = visual_features
-        self.audio_feaures = audio_feaures
+        self.audio_feaures = audio_features
 
         self.window_size_frame = window_size*framerate
         self.version = version
