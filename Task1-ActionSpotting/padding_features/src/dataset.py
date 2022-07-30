@@ -91,10 +91,10 @@ class SoccerNetClips(Dataset):
             feat_half1_file = os.path.join(self.path, f"1_{self.features}", game)
             feat_half2_file = os.path.join(self.path, f"2_{self.features}", game)
 
-            feat_half1 = np.load()
+            feat_half1 = np.load(feat_half1_file)
             feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
             
-            feat_half2 = np.load(os.path.join(self.path, game, "2_" + self.features))
+            feat_half2 = np.load(feat_half2_file)
             feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
 
             feat_half1 = padding(feat_half1, (5600, feat_half1.shape[1])).astype('float32')
