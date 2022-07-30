@@ -105,7 +105,7 @@ class SoccerNetClips(Dataset):
             audio_feats1_filename = os.path.join(
                 self.audio_path, game, f"1_{self.audio_feaures}")
             audio_feats2_filename = os.path.join(
-                self.audio_path, game, f"2_{self.audio_path}")
+                self.audio_path, game, f"2_{self.audio_feaures}")
 
             self.game_audio_feats_files.append(audio_feats1_filename)
             self.game_audio_feats_files.append(audio_feats2_filename)
