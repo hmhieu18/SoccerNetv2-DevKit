@@ -189,6 +189,8 @@ if __name__ == '__main__':
                         default=2,     help='Version of the dataset')
     parser.add_argument('--visual_feature_dim', required=False, type=int,
                         default=None,     help='Number of input features')
+    parser.add_argument('--audio_feature_dim', required=False, type=int,
+                        default=None,     help='Number of input features')
     parser.add_argument('--evaluation_frequency', required=False,
                         type=int,   default=10,     help='Number of chunks per epoch')
     parser.add_argument('--framerate', required=False, type=int,
