@@ -66,10 +66,10 @@ class SoccerNetClips(Dataset):
         self.audio_path = audio_path
 
         self.listGames = listGames
-        
+
         self.visual_features = visual_features
         self.audio_feaures = audio_feaures
-        
+
         self.window_size_frame = window_size*framerate
         self.version = version
         if version == 1:
@@ -93,7 +93,7 @@ class SoccerNetClips(Dataset):
 
         # game_counter = 0
         for game in tqdm(self.listGames):
-            #get filename
+            # get filename
             feats1_filename = os.path.join(
                 self.visual_path, game, f"1_{self.visual_features}")
             feats2_filename = os.path.join(
@@ -110,19 +110,16 @@ class SoccerNetClips(Dataset):
             self.game_audio_feats_files.append(audio_feats1_filename)
             self.game_audio_feats_files.append(audio_feats2_filename)
 
-
             feats1_shape = getShapeWithoutLoading(feats1_filename)
             feats2_shape = getShapeWithoutLoading(feats2_filename)
 
-            audio_feats1_shape = getShapeWithoutLoading(audio_feats1_filename)
-            audio_feats2_shape = getShapeWithoutLoading(audio_feats2_filename)
-
-            labels = json.load(open(os.path.join(self.visual_path, game, self.labels)))
+            labels = json.load(
+                open(os.path.join(self.visual_path, game, self.labels)))
 
             label_half1 = np.zeros((feats1_shape[0], self.num_classes+1))
-            label_half1[:,0]=1 # those are BG classes
+            label_half1[:, 0] = 1  # those are BG classes
             label_half2 = np.zeros((feats2_shape[0], self.num_classes+1))
-            label_half2[:,0]=1 # those are BG classes
+            label_half2[:, 0] = 1  # those are BG classes
             for annotation in labels["annotations"]:
 
                 time = annotation["gameTime"]
@@ -132,35 +129,42 @@ class SoccerNetClips(Dataset):
 
                 minutes = int(time[-5:-3])
                 seconds = int(time[-2::])
-                frame = framerate * ( seconds + 60 * minutes ) 
+                frame = framerate * (seconds + 60 * minutes)
 
                 if version == 1:
-                    if "card" in event: label = 0
-                    elif "subs" in event: label = 1
-                    elif "soccer" in event: label = 2
-                    else: continue
+                    if "card" in event:
+                        label = 0
+                    elif "subs" in event:
+                        label = 1
+                    elif "soccer" in event:
+                        label = 2
+                    else:
+                        continue
                 elif version >= 2:
                     if event not in self.dict_event:
                         continue
                     label = self.dict_event[event]
 
                 # if label outside temporal of view
-                if half == 1 and frame//self.window_size_frame>=label_half1.shape[0]:
+                if half == 1 and frame//self.window_size_frame >= label_half1.shape[0]:
                     continue
-                if half == 2 and frame//self.window_size_frame>=label_half2.shape[0]:
+                if half == 2 and frame//self.window_size_frame >= label_half2.shape[0]:
                     continue
 
                 if half == 1:
-                    label_half1[frame//self.window_size_frame][0] = 0 # not BG anymore
-                    label_half1[frame//self.window_size_frame][label+1] = 1 # that's my class
+                    # not BG anymore
+                    label_half1[frame//self.window_size_frame][0] = 0
+                    # that's my class
+                    label_half1[frame//self.window_size_frame][label+1] = 1
 
                 if half == 2:
-                    label_half2[frame//self.window_size_frame][0] = 0 # not BG anymore
-                    label_half2[frame//self.window_size_frame][label+1] = 1 # that's my class
+                    # not BG anymore
+                    label_half2[frame//self.window_size_frame][0] = 0
+                    # that's my class
+                    label_half2[frame//self.window_size_frame][label+1] = 1
 
             self.game_labels.append(label_half1)
             self.game_labels.append(label_half2)
-
 
     def __getitem__(self, index):
         """
@@ -173,7 +177,7 @@ class SoccerNetClips(Dataset):
         """
         # print("index", index)
         # print("game_feats", self.game_feats[index].shape)
-        return np.load(self.game_feats_files[index]), self.game_labels[index]
+        return np.load(self.game_feats_files[index]), np.load(self.game_audio_feats_files[index]), self.game_labels[index]
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
     def __len__(self):

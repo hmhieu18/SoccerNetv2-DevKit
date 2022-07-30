@@ -49,10 +49,10 @@ def main(args):
 
     # create dataset
     if not args.test_only:
-        dataset_Train = SoccerNetClips(visual_path=args.SoccerNet_path, visual_features=args.features, split=args.split_train,
+        dataset_Train = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_feaures=args.audio_feaures, split=args.split_train,
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
-        dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, visual_features=args.features, split=args.split_valid,
-                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+        dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_feaures=args.audio_feaures, split=args.split_valid,
+                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
         # dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
         #                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
     dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,

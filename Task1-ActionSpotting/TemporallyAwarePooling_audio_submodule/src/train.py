@@ -105,14 +105,15 @@ def train(dataloader,
 
     end = time.time()
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
-        for i, (feats, labels) in t:
+        for i, (feats, audio_feats, labels) in t:
             # measure data loading time
-            for (feat, label) in zip(feats, labels):
+            for (feat, audio_feat, label) in zip(feats, audio_feats, labels):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
+                audio_feat = audio_feat.cuda()
                 label = label.cuda()
                 # compute output
-                output = model(feat)
+                output = model(feat, audio_feat)
 
                 # hand written NLL criterion
                 loss = criterion(label, output)
@@ -154,14 +155,15 @@ def test(dataloader, model, model_name):
     all_labels = []
     all_outputs = []
     with tqdm(enumerate(dataloader), total=len(dataloader)) as t:
-        for i, (feats, labels) in t:
+        for i, (feats, audio_feats, labels) in t:
             # measure data loading time
 
             print("labels: ", labels.shape)
             print("feats: ", feats.shape)
-            for (feat, label) in zip(feats, labels):
+            for (feat, audio_feat, label) in zip(feats, audio_feats, labels):
                 data_time.update(time.time() - end)
                 feat = feat.cuda()
+                audio_feat = audio_feat.cuda()
                 # labels = labels.cuda()
 
                 # print(feat.shape)
@@ -169,7 +171,7 @@ def test(dataloader, model, model_name):
                 # print(feat.shape)
 
                 # compute output
-                output = model(feat)
+                output = model(feat, audio_feat)
 
                 all_labels.append(label.detach().numpy())
                 all_outputs.append(output.cpu().detach().numpy())
