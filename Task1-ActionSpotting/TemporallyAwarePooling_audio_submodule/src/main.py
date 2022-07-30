@@ -53,8 +53,8 @@ def main(args):
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
         dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
                                         version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
-        # dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
-        #                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+        dataset_Valid_metric = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
+                                              version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
     dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,
                                          version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
 
@@ -88,7 +88,7 @@ def main(args):
                                                  batch_size=args.batch_size, shuffle=False,
                                                  num_workers=args.max_num_worker, pin_memory=True)
 
-        val_metric_loader = torch.utils.data.DataLoader(dataset_Valid,
+        val_metric_loader = torch.utils.data.DataLoader(dataset_Valid_metric,
                                                         batch_size=args.batch_size, shuffle=False,
                                                         num_workers=args.max_num_worker, pin_memory=True)
 
@@ -110,7 +110,7 @@ def main(args):
 
     # Free up some RAM memory
     if not args.test_only:
-        del dataset_Train, dataset_Valid
+        del dataset_Train, dataset_Valid, dataset_Valid_metric
         del train_loader, val_loader, val_metric_loader
     else:
         del dataset_Test
