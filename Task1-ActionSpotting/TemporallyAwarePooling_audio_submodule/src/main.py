@@ -53,8 +53,9 @@ def main(args):
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
         dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
                                         version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
-        dataset_Valid_metric = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
-                                              version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+        dataset_Valid_metric = SoccerNetClipsTesting(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
+                                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+                                                        
     dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,
                                          version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
 
