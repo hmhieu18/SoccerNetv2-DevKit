@@ -88,24 +88,26 @@ class SoccerNetClips(Dataset):
         # game_counter = 0
         for game in tqdm(self.listGames):
             #get filename
-            feat_half1_file = os.path.join(self.path, game, f"1_{self.features}")
-            feat_half2_file = os.path.join(self.path, game, f"2_{self.features}")
+            # feat_half1_file = os.path.join(self.path, game, f"1_{self.features}")
+            # feat_half2_file = os.path.join(self.path, game, f"2_{self.features}")
 
-            feat_half1 = np.load(feat_half1_file)
-            feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
+            # feat_half1 = np.load(feat_half1_file)
+            # feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
             
-            feat_half2 = np.load(feat_half2_file)
-            feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
+            # feat_half2 = np.load(feat_half2_file)
+            # feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
 
-            feat_half1 = padding(feat_half1, (5600, feat_half1.shape[1])).astype('float32')
-            feat_half2 = padding(feat_half2, (5600, feat_half2.shape[1])).astype('float32')
+            # feat_half1 = padding(feat_half1, (5600, feat_half1.shape[1])).astype('float32')
+            # feat_half2 = padding(feat_half2, (5600, feat_half2.shape[1])).astype('float32')
 
-            feat_half1 = feats2clip(torch.from_numpy(feat_half1), stride=self.window_size_frame, clip_length=self.window_size_frame)
-            feat_half2 = feats2clip(torch.from_numpy(feat_half2), stride=self.window_size_frame, clip_length=self.window_size_frame)
+            # feat_half1 = feats2clip(torch.from_numpy(feat_half1), stride=self.window_size_frame, clip_length=self.window_size_frame)
+            # feat_half2 = feats2clip(torch.from_numpy(feat_half2), stride=self.window_size_frame, clip_length=self.window_size_frame)
             
-            np.save(feat_half1_file, feat_half1)
-            np.save(feat_half2_file, feat_half2)
-
+            # np.save(feat_half1_file, feat_half1)
+            # np.save(feat_half2_file, feat_half2)
+            feat_half1_file = getShapeWithoutLoading(os.path.join(self.path, game, f"1_{self.features}"))
+            feat_half2_file = getShapeWithoutLoading(os.path.join(self.path, game, f"2_{self.features}"))
+            print(feat_half1_file, feat_half2_file)
 
 
 
