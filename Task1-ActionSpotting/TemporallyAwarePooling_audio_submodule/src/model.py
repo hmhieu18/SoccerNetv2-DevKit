@@ -111,14 +111,14 @@ class Model(nn.Module):
         # input_shape: (batch,frames,dim_features)
 
         BS, FR, IC = visual_inputs.shape
-        print("BS, FR, IC", BS, FR, IC)
+        print("visual_inputs.shape", visual_inputs.shape)
         if not IC == 512:
             visual_inputs = visual_inputs.reshape(BS*FR, IC)
             visual_inputs = self.feature_extractor(visual_inputs)
             visual_inputs = visual_inputs.reshape(BS, FR, -1)
 
         BS, FR, IC = audio_inputs.shape
-        print("BS, FR, IC", BS, FR, IC)
+        print("audio_inputs.shape", audio_inputs.shape)
         if not IC == 32:
             audio_inputs = audio_inputs.reshape(BS*FR, IC)
             audio_inputs = self.audio_feature_extractor(audio_inputs)
