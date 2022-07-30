@@ -141,6 +141,8 @@ def train(dataloader,
                 desc += f'(it:{data_time.val:.3f}s) '
                 desc += f'Loss {losses.avg:.4e} '
                 t.set_description(desc)
+                
+                del loss, output
 
     return losses.avg
 
