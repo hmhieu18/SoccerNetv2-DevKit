@@ -36,10 +36,10 @@ class Model(nn.Module):
             input_size = 512
             self.input_size = 512
 
-        if not self.audio_input_size == 32:
-            self.audio_feature_extractor = nn.Linear(self.audio_input_size, 32)
-            audio_input_size = 32
-            self.audio_input_size = 32
+        if not self.audio_input_size == 68:
+            self.audio_feature_extractor = nn.Linear(self.audio_input_size, 68)
+            audio_input_size = 68
+            self.audio_input_size = 68
 
         if self.pool == "MAX":
             self.pool_layer = nn.MaxPool1d(self.window_size_frame, stride=1)
@@ -117,7 +117,7 @@ class Model(nn.Module):
             visual_inputs = visual_inputs.reshape(BS, FR, -1)
 
         BS, FR, IC = audio_inputs.shape
-        if not IC == 32:
+        if not IC == 68:
             audio_inputs = audio_inputs.reshape(BS*FR, IC)
             audio_inputs = self.audio_feature_extractor(audio_inputs)
             audio_inputs = audio_inputs.reshape(BS, FR, -1)
