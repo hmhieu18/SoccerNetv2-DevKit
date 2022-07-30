@@ -63,11 +63,11 @@ def main(args):
         print("visual_feature_dim found:", args.visual_feature_dim)
 
     if args.audio_feature_dim is None:
-        args.audio_feature_dim = dataset_Test[0][1].shape[-1]
+        args.audio_feature_dim = 68
         print("visual_feature_dim found:", args.audio_feature_dim)
 
     # create model
-    model = Model(weights=args.load_weights, input_size=args.visual_feature_dim,
+    model = Model(weights=args.load_weights, input_size=args.visual_feature_dim, audio_input_size=args.audio_feature_dim,
                   num_classes=dataset_Test.num_classes, window_size=args.window_size,
                   vocab_size=args.vocab_size,
                   framerate=args.framerate, pool=args.pool).cuda()
