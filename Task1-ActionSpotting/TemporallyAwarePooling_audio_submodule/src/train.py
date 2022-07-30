@@ -104,7 +104,7 @@ def train(dataloader,
         model.eval()
 
     end = time.time()
-    with enumerate((tqdm(dataloader, total=len(dataloader))) as t:
+    with enumerate(tqdm(dataloader, total=len(dataloader))) as t:
         for i, (feats, audio_feats, labels) in t:
             # measure data loading time
             for (feat, audio_feat, label) in zip(feats, audio_feats, labels):
@@ -226,7 +226,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
         count_all = torch.FloatTensor([0.0]*dataloader.dataset.num_classes)
 
         end = time.time()
-        with enumerate((tqdm(dataloader, total=len(dataloader))) as t:
+        with enumerate(tqdm(dataloader, total=len(dataloader))) as t:
             for i, (game_ID, feat_half1, feat_half2, label_half1, label_half2) in t:
                 data_time.update(time.time() - end)
 
