@@ -179,7 +179,7 @@ class SoccerNetClips(Dataset):
         # print("game_feats", self.game_feats[index].shape)
         print(self.game_audio_feats_files[index], np.load(self.game_audio_feats_files[index]).shape)
         print(self.game_feats_files[index], np.load(self.game_feats_files[index]).shape)
-        
+
         return np.load(self.game_feats_files[index]), np.load(self.game_audio_feats_files[index]), self.game_labels[index]
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
@@ -206,15 +206,15 @@ class SoccerNetClipsTesting(Dataset):
             self.num_classes = 17
             self.labels = "Labels-v2.json"
 
-        logging.info("Checking/Download features and labels locally")
-        downloader = SoccerNetDownloader(path)
-        for s in split:
-            if s == "challenge":
-                downloader.downloadGames(files=[f"1_{self.features}", f"2_{self.features}"], split=[
-                                         s], verbose=False, randomized=True)
-            else:
-                downloader.downloadGames(files=[self.labels, f"1_{self.features}", f"2_{self.features}"], split=[
-                                         s], verbose=False, randomized=True)
+        # logging.info("Checking/Download features and labels locally")
+        # downloader = SoccerNetDownloader(path)
+        # for s in split:
+        #     if s == "challenge":
+        #         downloader.downloadGames(files=[f"1_{self.features}", f"2_{self.features}"], split=[
+        #                                  s], verbose=False, randomized=True)
+        #     else:
+        #         downloader.downloadGames(files=[self.labels, f"1_{self.features}", f"2_{self.features}"], split=[
+        #                                  s], verbose=False, randomized=True)
 
     def __getitem__(self, index):
         """
