@@ -88,8 +88,8 @@ class SoccerNetClips(Dataset):
         # game_counter = 0
         for game in tqdm(self.listGames):
             #get filename
-            feat_half1_file = os.path.join(self.path, f"1_{self.features}", game)
-            feat_half2_file = os.path.join(self.path, f"2_{self.features}", game)
+            feat_half1_file = os.path.join(self.path, game, f"1_{self.features}")
+            feat_half2_file = os.path.join(self.path, game, f"2_{self.features}")
 
             feat_half1 = np.load(feat_half1_file)
             feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
