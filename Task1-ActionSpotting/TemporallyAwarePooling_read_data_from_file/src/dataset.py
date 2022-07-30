@@ -82,7 +82,7 @@ class SoccerNetClips(Dataset):
 
         logging.info("Pre-compute clips")
 
-        self.game_feats_file = list()
+        self.game_feats_files = list()
         self.game_labels = list()
 
         # game_counter = 0
@@ -93,8 +93,8 @@ class SoccerNetClips(Dataset):
             feats2_filename = os.path.join(
                 self.path, game, f"2_{self.features}")
         
-            self.game_feats_file.append(feats1_filename)
-            self.game_feats_file.append(feats2_filename)
+            self.game_feats_files.append(feats1_filename)
+            self.game_feats_files.append(feats2_filename)
 
             feats1_shape = getShapeWithoutLoading(feats1_filename)
             feats2_shape = getShapeWithoutLoading(feats2_filename)
@@ -103,9 +103,45 @@ class SoccerNetClips(Dataset):
 
             label_half1 = np.zeros((feats1_shape[0], self.num_classes+1))
             label_half1[:,0]=1 # those are BG classes
-            label_half2 = np.zeros((feats1_shape[0], self.num_classes+1))
+            label_half2 = np.zeros((feats2_shape[0], self.num_classes+1))
             label_half2[:,0]=1 # those are BG classes
+            for annotation in labels["annotations"]:
 
+                time = annotation["gameTime"]
+                event = annotation["label"]
+
+                half = int(time[0])
+
+                minutes = int(time[-5:-3])
+                seconds = int(time[-2::])
+                frame = framerate * ( seconds + 60 * minutes ) 
+
+                if version == 1:
+                    if "card" in event: label = 0
+                    elif "subs" in event: label = 1
+                    elif "soccer" in event: label = 2
+                    else: continue
+                elif version >= 2:
+                    if event not in self.dict_event:
+                        continue
+                    label = self.dict_event[event]
+
+                # if label outside temporal of view
+                if half == 1 and frame//self.window_size_frame>=label_half1.shape[0]:
+                    continue
+                if half == 2 and frame//self.window_size_frame>=label_half2.shape[0]:
+                    continue
+
+                if half == 1:
+                    label_half1[frame//self.window_size_frame][0] = 0 # not BG anymore
+                    label_half1[frame//self.window_size_frame][label+1] = 1 # that's my class
+
+                if half == 2:
+                    label_half2[frame//self.window_size_frame][0] = 0 # not BG anymore
+                    label_half2[frame//self.window_size_frame][label+1] = 1 # that's my class
+
+            self.game_labels.append(label_half1)
+            self.game_labels.append(label_half2)
 
 
     def __getitem__(self, index):
@@ -119,11 +155,11 @@ class SoccerNetClips(Dataset):
         """
         # print("index", index)
         # print("game_feats", self.game_feats[index].shape)
-        return self.game_feats[index], self.game_labels[index]
+        return np.load(self.game_feats_files[index]), self.game_labels[index]
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
     def __len__(self):
-        return len(self.game_feats)
+        return len(self.game_feats_files)
 
 
 class SoccerNetClipsTesting(Dataset):
