@@ -69,7 +69,7 @@ if __name__ == '__main__':
     parser.add_argument('--SoccerNet_path',   required=False, type=str,
                         default="/path/to/SoccerNet/",     help='Path for SoccerNet')
     parser.add_argument('--features',   required=False, type=str,
-                        default="ResNET_TF2.npy",     help='Video features')
+                        default="224ppyAudioAnalysis.npy",     help='Video features')
     parser.add_argument('--max_epochs',   required=False, type=int,
                         default=1000,     help='Maximum number of epochs')
     parser.add_argument('--load_weights',   required=False,

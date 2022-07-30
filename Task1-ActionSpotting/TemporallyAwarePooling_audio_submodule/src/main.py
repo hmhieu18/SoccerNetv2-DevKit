@@ -49,20 +49,25 @@ def main(args):
 
     # create dataset
     if not args.test_only:
-        dataset_Train = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_train,
+        dataset_Train = SoccerNetClips(visual_path=args.SoccerNet_path, visual_features=args.features, split=args.split_train,
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
-        dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
+        dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, visual_features=args.features, split=args.split_valid,
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
         # dataset_Valid = SoccerNetClips(path=args.SoccerNet_path, features=args.features, split=args.split_valid,
         #                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
     dataset_Test = SoccerNetClipsTesting(path=args.SoccerNet_path, features=args.features, split=args.split_test,
                                          version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
 
-    if args.feature_dim is None:
-        args.feature_dim = dataset_Test[0][1].shape[-1]
-        print("feature_dim found:", args.feature_dim)
+    if args.visual_feature_dim is None:
+        args.visual_feature_dim = dataset_Test[0][1].shape[-1]
+        print("visual_feature_dim found:", args.visual_feature_dim)
+
+    if args.audio_feature_dim is None:
+        args.audio_feature_dim = dataset_Test[0][1].shape[-1]
+        print("visual_feature_dim found:", args.audio_feature_dim)
+
     # create model
-    model = Model(weights=args.load_weights, input_size=args.feature_dim,
+    model = Model(weights=args.load_weights, input_size=args.visual_feature_dim,
                   num_classes=dataset_Test.num_classes, window_size=args.window_size,
                   vocab_size=args.vocab_size,
                   framerate=args.framerate, pool=args.pool).cuda()
@@ -175,7 +180,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--version', required=False, type=int,
                         default=2,     help='Version of the dataset')
-    parser.add_argument('--feature_dim', required=False, type=int,
+    parser.add_argument('--visual_feature_dim', required=False, type=int,
                         default=None,     help='Number of input features')
     parser.add_argument('--evaluation_frequency', required=False,
                         type=int,   default=10,     help='Number of chunks per epoch')
