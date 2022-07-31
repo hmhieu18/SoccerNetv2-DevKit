@@ -27,15 +27,17 @@ def trainer(train_loader,
             criterion,
             model_name,
             max_epochs=1000,
-            evaluation_frequency=20):
+            evaluation_frequency=20, base_dir=None,):
 
     logging.info("start training")
 
     best_loss = 9e99
 
     for epoch in range(max_epochs):
-        best_model_path = os.path.join("models", model_name, "model.pth.tar")
-
+        if base_dir is not None:
+            best_model_path = os.path.join(base_dir,"models", model_name, "model.pth.tar")
+        else:
+            best_model_path = os.path.join("models", model_name, "model.pth.tar")
         # train for one epoch
         loss_training = train(train_loader, model, criterion,
                               optimizer, epoch + 1, train=True)
@@ -50,7 +52,7 @@ def trainer(train_loader,
             'best_loss': best_loss,
             'optimizer': optimizer.state_dict(),
         }
-        os.makedirs(os.path.join("models", model_name), exist_ok=True)
+        os.makedirs(os.path.join(base_dir, "models", model_name), exist_ok=True)
 
         # remember best prec@1 and save checkpoint
         is_better = loss_validation < best_loss

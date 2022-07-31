@@ -110,7 +110,7 @@ def main(args):
         trainer(train_loader, val_loader, val_metric_loader,
                 model, optimizer, scheduler, criterion,
                 model_name=args.model_name,
-                max_epochs=args.max_epochs, evaluation_frequency=args.evaluation_frequency)
+                max_epochs=args.max_epochs, evaluation_frequency=args.evaluation_frequency, base_dir=args.base_dir,)
 
     # Free up some RAM memory
     if not args.test_only:
@@ -238,6 +238,10 @@ if __name__ == '__main__':
                         type=str,   default="", help='valid list location')
     parser.add_argument('--test_list', required=False,
                         type=str,   default="", help='test list location')
+
+    parser.add_argument('--base_dir', required=False,
+                        type=str,   default="", help='')
+
     parser.add_argument('--percent', required=False, type=float,
                         default=1.0,     help='percent of data to use')
 
@@ -251,8 +255,8 @@ if __name__ == '__main__':
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % args.loglevel)
 
-    os.makedirs(os.path.join("models", args.model_name), exist_ok=True)
-    log_path = os.path.join("models", args.model_name,
+    os.makedirs(os.path.join(args.base_dir, "models", args.model_name), exist_ok=True)
+    log_path = os.path.join(args.base_dir, "models", args.model_name,
                             datetime.now().strftime('%Y-%m-%d_%H-%M-%S.log'))
     logging.basicConfig(
         level=numeric_level,
