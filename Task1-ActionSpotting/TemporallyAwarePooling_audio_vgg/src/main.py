@@ -169,7 +169,7 @@ if __name__ == '__main__':
                         default="ResNET_TF2.npy",     help='Video features')
     
     parser.add_argument('--audio_features',   required=False, type=str,
-                        default="224pmelspec.npy",     help='audio features')
+                        default="224p_VGGish.npy",     help='audio features')
     parser.add_argument('--max_epochs',   required=False, type=int,
                         default=1000,     help='Maximum number of epochs')
     parser.add_argument('--load_weights',   required=False,
