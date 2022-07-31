@@ -7,7 +7,6 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 import torch
 
-from dataset import SoccerNetClips, SoccerNetClipsTesting  # ,SoccerNetClipsOld
 from model import Model
 from train import trainer, test, testSpotting
 from loss import NLLLoss
@@ -15,7 +14,11 @@ from SoccerNet.Downloader import getListGames
 
 
 def main(args):
-
+    if args.load_once:
+        from dataset_1 import SoccerNetClips, SoccerNetClipsTesting  # ,SoccerNetClipsOld
+    else:
+        from dataset import SoccerNetClips, SoccerNetClipsTesting
+    
     logging.info("Parameters:")
     for arg in vars(args):
         logging.info(arg.rjust(15) + " : " + str(getattr(args, arg)))
@@ -178,6 +181,9 @@ if __name__ == '__main__':
                         default="NetVLAD++",     help='named of the model to save')
     parser.add_argument('--test_only',   required=False,
                         action='store_true',  help='Perform testing only')
+
+    parser.add_argument('--load_once',   required=False,
+                        action='store_true', default=False,  help='Perform testing only')
 
     parser.add_argument('--split_train', nargs='+',
                         default=["train"], help='list of split for training')

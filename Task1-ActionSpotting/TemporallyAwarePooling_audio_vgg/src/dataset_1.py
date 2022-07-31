@@ -87,8 +87,8 @@ class SoccerNetClips(Dataset):
 
         # logging.info("Pre-compute clips")
 
-        self.game_feats_files = list()
-        self.game_audio_feats_files = list()
+        self.game_feats = list()
+        self.game_audio_feats = list()
         self.game_labels = list()
 
         # game_counter = 0
@@ -98,20 +98,21 @@ class SoccerNetClips(Dataset):
                 self.visual_path, game, f"1_{self.visual_features}")
             feats2_filename = os.path.join(
                 self.visual_path, game, f"2_{self.visual_features}")
-
-            self.game_feats_files.append(feats1_filename)
-            self.game_feats_files.append(feats2_filename)
-
             audio_feats1_filename = os.path.join(
                 self.audio_path, game, f"1_{self.audio_feaures}")
             audio_feats2_filename = os.path.join(
                 self.audio_path, game, f"2_{self.audio_feaures}")
 
-            self.game_audio_feats_files.append(audio_feats1_filename)
-            self.game_audio_feats_files.append(audio_feats2_filename)
+            feat_half1 = np.load(feats1_filename)
+            feat_half2 = np.load(feats2_filename)
 
-            feats1_shape = getShapeWithoutLoading(feats1_filename)
-            feats2_shape = getShapeWithoutLoading(feats2_filename)
+            audio_feat_half1 = np.load(audio_feats1_filename)
+            audio_feat_half2 = np.load(audio_feats2_filename)
+
+
+
+            feats1_shape = feat_half1.shape
+            feats2_shape = feat_half2.shape
 
             labels = json.load(
                 open(os.path.join(self.visual_path, game, self.labels)))
@@ -162,6 +163,11 @@ class SoccerNetClips(Dataset):
                     label_half2[frame//self.window_size_frame][0] = 0
                     # that's my class
                     label_half2[frame//self.window_size_frame][label+1] = 1
+            self.game_feats.append(feat_half1)
+            self.game_feats.append(feat_half2)
+            
+            self.game_audio_feats.append(audio_feat_half1)
+            self.game_audio_feats.append(audio_feat_half2)
 
             self.game_labels.append(label_half1)
             self.game_labels.append(label_half2)
@@ -180,7 +186,7 @@ class SoccerNetClips(Dataset):
         # print(self.game_audio_feats_files[index], np.load(self.game_audio_feats_files[index]).shape)
         # print(self.game_feats_files[index], np.load(self.game_feats_files[index]).shape)
 
-        return np.load(self.game_feats_files[index]), np.load(self.game_audio_feats_files[index]), self.game_labels[index]
+        return self.game_feats[index], self.game_audio_feats[index], self.game_labels[index]
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
     def __len__(self):
