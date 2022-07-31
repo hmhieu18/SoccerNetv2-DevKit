@@ -42,7 +42,7 @@ for gameSet, setName, i in zip(allGames, ["train", "test", "valid"], range(3)):
         print(f"Getting game {game}")
         for half in [1, 2]:
             try:
-              audioFileName = os.path.join(rootAudio, game, f"{half}_224ppyAudioAnalysis.npy") 
+              audioFileName = os.path.join(rootAudio, game, f"{half}_224pmelspec.npy") 
               audioFeaturesShape = getShapeWithoutLoading(audioFileName)
               print(f"LOADING {game} HALF {half}..., SHAPE : {audioFeaturesShape}")
 
