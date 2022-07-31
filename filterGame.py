@@ -42,18 +42,18 @@ for gameSet, setName, i in zip(allGames, ["train", "test", "valid"], range(3)):
         print(f"Getting game {game}")
         for half in [1, 2]:
             try:
-              audioFileName = os.path.join(rootAudio, game, f"{half}_224pmelspec.npy") 
+              audioFileName = os.path.join(rootAudio, game, f"{half}_224p_VGGish.npy") 
               audioFeaturesShape = getShapeWithoutLoading(audioFileName)
               print(f"LOADING {game} HALF {half}..., SHAPE : {audioFeaturesShape}")
 
 
-              visualFileName = os.path.join(rootVisual, game, f"{half}_ResNET_TF2.npy") 
-              visualFeaturesShape = getShapeWithoutLoading(visualFileName)
+            #   visualFileName = os.path.join(rootVisual, game, f"{half}_ResNET_TF2.npy") 
+            #   visualFeaturesShape = getShapeWithoutLoading(visualFileName)
 
               # diff = audioFeaturesShape[1] - visualFeaturesShape[0]
 
               # print(f"LOADING {game} HALF {half}..., SHAPE DIFF: {diff}")
-              if(audioFeaturesShape[2]!=68):
+              if(audioFeaturesShape[2]!=512):
                 print(f"ERROR (LENGTH): {game}")
                 errorGames[i].append(game)
 
