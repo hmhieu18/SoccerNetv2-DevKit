@@ -190,7 +190,7 @@ class SoccerNetClips(Dataset):
         # return self.game_feats[index, :, :], self.game_labels[index, :]
 
     def __len__(self):
-        return len(self.game_feats_files)
+        return len(self.game_feats)
 
 
 class SoccerNetClipsTesting(Dataset):
