@@ -68,6 +68,6 @@ for gset, egset, i in zip(allGames, errorGames, range(3)):
   filteredGames.append(list(set(gset)-set(egset)))
 
 for gs, i, setname in zip(filteredGames, range(3), ["train", "test", "valid"]):
-  np.save(os.path.join("/content/splits", f"{setname}_split.npy"), gs)
+  np.save(os.path.join("/content/splits-vgg", f"{setname}_split.npy"), gs)
 for game in filteredGames:
   print(len(game))
