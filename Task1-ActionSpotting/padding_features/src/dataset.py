@@ -103,12 +103,12 @@ class SoccerNetClips(Dataset):
             feat_half1 = feats2clip(torch.from_numpy(feat_half1), stride=self.window_size_frame, clip_length=self.window_size_frame)
             feat_half2 = feats2clip(torch.from_numpy(feat_half2), stride=self.window_size_frame, clip_length=self.window_size_frame)
             
-            np.save(feat_half1_file, feat_half1)
-            np.save(feat_half2_file, feat_half2)
+            # np.save(feat_half1_file, feat_half1)
+            # np.save(feat_half2_file, feat_half2)
 
-            feat_half1_file = getShapeWithoutLoading(os.path.join(self.path, game, f"1_{self.features}"))
-            feat_half2_file = getShapeWithoutLoading(os.path.join(self.path, game, f"2_{self.features}"))
-            print(feat_half1_file, feat_half2_file)
+            # feat_half1_file = getShapeWithoutLoading(os.path.join(self.path, game, f"1_{self.features}"))
+            # feat_half2_file = getShapeWithoutLoading(os.path.join(self.path, game, f"2_{self.features}"))
+            print(feat_half1.shape, feat_half1.shape)
 
 
 
