@@ -105,8 +105,8 @@ class SoccerNetClips(Dataset):
             print("feat_half1", feat_half1.shape)
             print("feat_half2", feat_half2.shape)
             
-            # np.save(feat_half1_file, feat_half1)
-            # np.save(feat_half2_file, feat_half2)
+            np.save(feat_half1_file, feat_half1)
+            np.save(feat_half2_file, feat_half2)
             
             # feat_half1_file = getShapeWithoutLoading(os.path.join(self.path, game, f"1_{self.features}"))
             # feat_half2_file = getShapeWithoutLoading(os.path.join(self.path, game, f"2_{self.features}"))
