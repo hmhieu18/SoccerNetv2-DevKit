@@ -242,8 +242,8 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 feat_half2 = feat_half2.squeeze(0)
                 audio_feat_half2 = audio_feat_half2.squeeze(0)
                 # label_half2 = label_half2.float().squeeze(0)
-                print(game_ID, audio_feat_half1.shape,
-                      audio_feat_half2.shape, feat_half1.shape, feat_half2.shape)
+                # print(game_ID, audio_feat_half1.shape,
+                #       audio_feat_half2.shape, feat_half1.shape, feat_half2.shape)
                 # Compute the output for batches of frames
                 BS = 256
                 timestamp_long_half_1 = []
