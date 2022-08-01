@@ -259,7 +259,7 @@ class SoccerNetClipsTesting(Dataset):
         return len(self.listGames)
 
 class SoccerNetClipsTesting2(Dataset):
-    def __init__(self, visual_path, audio_path, features="ResNET_PCA512.npy", audio_features="224p_VGGish.npy", split=["test"], version=1,
+    def __init__(self, visual_path, audio_path, features="ResNET_PCA512.npy", audio_features="224p_VGGish_Test.npy", split=["test"], version=1,
                  framerate=2, window_size=15, listGames=None,):
         self.visual_path = visual_path
         self.audio_path = audio_path
