@@ -325,9 +325,9 @@ class SoccerNetClipsTesting2(Dataset):
         label_half2 = np.zeros((feat_half2.shape[0], self.num_classes))
 
         # check if annoation exists
-        if os.path.exists(os.path.join(self.path, self.listGames[index], self.labels)):
+        if os.path.exists(os.path.join(self.visual_path, self.listGames[index], self.labels)):
             labels = json.load(
-                open(os.path.join(self.path, self.listGames[index], self.labels)))
+                open(os.path.join(self.visual_path, self.listGames[index], self.labels)))
 
             for annotation in labels["annotations"]:
 
