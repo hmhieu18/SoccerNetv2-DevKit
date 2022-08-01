@@ -209,7 +209,7 @@ def test(dataloader, model, model_name):
 def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, NMS_threshold=0.5, list_games=None):
 
     split = '_'.join(dataloader.dataset.split)
-    # print(split)
+    print(split)
     output_results = os.path.join(
         "models", model_name, f"results_spotting_{split}.zip")
     output_folder = f"outputs_{split}"
