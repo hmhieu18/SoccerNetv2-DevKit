@@ -314,11 +314,16 @@ class SoccerNetClipsTesting2(Dataset):
         
         feat_half1 = np.load(feats1_filename)
         feat_half2 = np.load(feats2_filename)
+        print(feat_half1.shape)
+        print(feat_half2.shape)
+
         feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
         feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
         
         audio_feat_half1 = np.load(audio_feats1_filename)
         audio_feat_half2 = np.load(audio_feats2_filename)
+        print(audio_feat_half1.shape)
+        print(audio_feat_half2.shape)
         audio_feat_half1 = audio_feat_half1.reshape(-1, audio_feat_half1.shape[-1])
         audio_feat_half2 = audio_feat_half2.reshape(-1, audio_feat_half2.shape[-1])
 
