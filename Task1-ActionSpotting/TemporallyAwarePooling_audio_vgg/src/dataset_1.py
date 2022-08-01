@@ -194,11 +194,12 @@ class SoccerNetClips(Dataset):
 
 
 class SoccerNetClipsTesting(Dataset):
-    def __init__(self, path, features="ResNET_PCA512.npy", split=["test"], version=1,
+    def __init__(self, path, features="ResNET_PCA512.npy", audio_features="224p_VGGish_Test", split=["test"], version=1,
                  framerate=2, window_size=15, listGames=None,):
         self.path = path
         self.listGames = listGames
         self.features = features
+        self.audio_features = audio_features
         self.window_size_frame = window_size*framerate
         self.framerate = framerate
         self.version = version
@@ -239,6 +240,15 @@ class SoccerNetClipsTesting(Dataset):
         feat_half2 = np.load(os.path.join(
             self.path, self.listGames[index], "2_" + self.features))
         feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
+
+        # Load audio features
+        audio_feat_half1 = np.load(os.path.join(
+            self.path, self.listGames[index], "1_" + self.audio_features))
+        audio_feat_half1 = audio_feat_half1.reshape(-1, audio_feat_half1.shape[-1])
+        audio_feat_half2 = np.load(os.path.join(
+            self.path, self.listGames[index], "2_" + self.audio_features))
+        audio_feat_half2 = audio_feat_half2.reshape(-1, audio_feat_half2.shape[-1])
+
 
         # Load labels
         label_half1 = np.zeros((feat_half1.shape[0], self.num_classes))
@@ -294,8 +304,15 @@ class SoccerNetClipsTesting(Dataset):
         feat_half2 = feats2clip(torch.from_numpy(feat_half2),
                                 stride=1, off=int(self.window_size_frame/2),
                                 clip_length=self.window_size_frame)
+        
+        audio_feat_half1 = feats2clip(torch.from_numpy(audio_feat_half1),
+                                stride=1, off=int(self.window_size_frame/2),
+                                clip_length=self.window_size_frame)
+        audio_feat_half2 = feats2clip(torch.from_numpy(audio_feat_half2),
+                                stride=1, off=int(self.window_size_frame/2),
+                                clip_length=self.window_size_frame)
 
-        return self.listGames[index], feat_half1, feat_half2, label_half1, label_half2
-
+        return self.listGames[index], feat_half1, feat_half2, audio_feat_half1, audio_feat_half2, label_half1, label_half2
+        
     def __len__(self):
         return len(self.listGames)
