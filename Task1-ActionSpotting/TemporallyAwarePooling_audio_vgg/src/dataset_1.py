@@ -68,7 +68,7 @@ class SoccerNetClips(Dataset):
         self.listGames = listGames
 
         self.visual_features = visual_features
-        self.audio_feaures = audio_features
+        self.audio_features = audio_features
 
         self.window_size_frame = window_size*framerate
         self.version = version
@@ -99,9 +99,9 @@ class SoccerNetClips(Dataset):
             feats2_filename = os.path.join(
                 self.visual_path, game, f"2_{self.visual_features}")
             audio_feats1_filename = os.path.join(
-                self.audio_path, game, f"1_{self.audio_feaures}")
+                self.audio_path, game, f"1_{self.audio_features}")
             audio_feats2_filename = os.path.join(
-                self.audio_path, game, f"2_{self.audio_feaures}")
+                self.audio_path, game, f"2_{self.audio_features}")
 
             feat_half1 = np.load(feats1_filename)
             feat_half2 = np.load(feats2_filename)
@@ -194,14 +194,14 @@ class SoccerNetClips(Dataset):
 
 
 class SoccerNetClipsTesting(Dataset):
-    def __init__(self, visual_path, audio_path, features="ResNET_PCA512.npy", audio_features="224p_VGGish_Test", split=["test"], version=1,
+    def __init__(self, visual_path, audio_path, features="ResNET_PCA512.npy", audio_features="224p_VGGish.npy", split=["test"], version=1,
                  framerate=2, window_size=15, listGames=None,):
         # self.path = path
         self.visual_path = visual_path
         self.audio_path = audio_path
 
         self.listGames = listGames
-        self.features = features
+        self.visual_features = features
         self.audio_features = audio_features
         self.window_size_frame = window_size*framerate
         self.framerate = framerate
@@ -242,9 +242,9 @@ class SoccerNetClipsTesting(Dataset):
         feats2_filename = os.path.join(
             self.visual_path, game, f"2_{self.visual_features}")
         audio_feats1_filename = os.path.join(
-            self.audio_path, game, f"1_{self.audio_feaures}")
+            self.audio_path, game, f"1_{self.audio_features}")
         audio_feats2_filename = os.path.join(
-            self.audio_path, game, f"2_{self.audio_feaures}")
+            self.audio_path, game, f"2_{self.audio_features}")
 
         feat_half1 = np.load(feats1_filename)
         feat_half2 = np.load(feats2_filename)
