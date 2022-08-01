@@ -229,18 +229,18 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
 
         end = time.time()
         with tqdm(dataloader) as t:
-            for i, (game_ID, feat_half1, feat_half2, audio_feat_half1, audio_feat_half2, label_half1, label_half2) in enumerate(t):
+            for i, (game_ID, feat_half1, feat_half2, audio_feat_half1, audio_feat_half2) in enumerate(t):
                 data_time.update(time.time() - end)
 
                 # Batch size of 1
                 game_ID = game_ID[0]
                 feat_half1 = feat_half1.squeeze(0)
                 audio_feat_half1 = audio_feat_half1.squeeze(0)
-                label_half1 = label_half1.float().squeeze(0)
+                # label_half1 = label_half1.float().squeeze(0)
 
                 feat_half2 = feat_half2.squeeze(0)
                 audio_feat_half2 = audio_feat_half2.squeeze(0)
-                label_half2 = label_half2.float().squeeze(0)
+                # label_half2 = label_half2.float().squeeze(0)
 
                 # Compute the output for batches of frames
                 BS = 256
@@ -271,10 +271,10 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 timestamp_long_half_1 = timestamp_long_half_1[:, 1:]
                 timestamp_long_half_2 = timestamp_long_half_2[:, 1:]
 
-                spotting_grountruth.append(torch.abs(label_half1))
-                spotting_grountruth.append(torch.abs(label_half2))
-                spotting_grountruth_visibility.append(label_half1)
-                spotting_grountruth_visibility.append(label_half2)
+                # spotting_grountruth.append(torch.abs(label_half1))
+                # spotting_grountruth.append(torch.abs(label_half2))
+                # spotting_grountruth_visibility.append(label_half1)
+                # spotting_grountruth_visibility.append(label_half2)
                 spotting_predictions.append(timestamp_long_half_1)
                 spotting_predictions.append(timestamp_long_half_2)
 
