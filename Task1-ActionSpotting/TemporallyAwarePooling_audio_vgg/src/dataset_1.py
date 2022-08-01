@@ -381,7 +381,7 @@ class SoccerNetClipsTesting2(Dataset):
         audio_feat_half2 = feats2clip(torch.from_numpy(audio_feat_half2),
                                 stride=1, off=int(self.window_size_frame/2),
                                 clip_length=self.window_size_frame)
-
+                                
         return self.listGames[index], feat_half1, feat_half2, audio_feat_half1, audio_feat_half2
 
     def __len__(self):

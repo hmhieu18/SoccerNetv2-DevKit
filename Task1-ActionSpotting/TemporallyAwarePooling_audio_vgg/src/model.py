@@ -159,7 +159,10 @@ class Model(nn.Module):
                 audio_inputs[:, audio_nb_frames_50:, :])
             audio_inputs_pooled = torch.cat(
                 (audio_inputs_before_pooled, audio_inputs_after_pooled), dim=1)
-            
+
+            print("audio_inputs_pooled.shape", audio_inputs_pooled.shape)
+            print("inputs_pooled.shape", inputs_pooled.shape)
+
             inputs_pooled = torch.cat(
                 (inputs_pooled, audio_inputs_pooled), dim=1)
 
