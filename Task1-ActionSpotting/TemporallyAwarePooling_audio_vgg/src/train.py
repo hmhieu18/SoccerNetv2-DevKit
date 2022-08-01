@@ -205,7 +205,7 @@ def test(dataloader, model, model_name):
 
     return mAP
 
-def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, NMS_threshold=0.5):
+def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, NMS_threshold=0.5, list_games=None):
     
     split = '_'.join(dataloader.dataset.split)
     # print(split)
@@ -368,6 +368,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                  Predictions_path=output_results,
                  split="test",
                  prediction_file="results_spotting.json", 
-                 version=dataloader.dataset.version)
+                 version=dataloader.dataset.version,
+                 list_games=list_games,)
 
     return results

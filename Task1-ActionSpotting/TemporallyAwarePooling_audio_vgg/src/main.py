@@ -18,7 +18,7 @@ def main(args):
         from dataset_1 import SoccerNetClips, SoccerNetClipsTesting  # ,SoccerNetClipsOld
     else:
         from dataset import SoccerNetClips, SoccerNetClipsTesting
-    
+
     logging.info("Parameters:")
     for arg in vars(args):
         logging.info(arg.rjust(15) + " : " + str(getattr(args, arg)))
@@ -54,10 +54,10 @@ def main(args):
     if not args.test_only:
         dataset_Train = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_train,
                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=train_list)
-        dataset_Valid        = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
-                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+        dataset_Valid = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
+                                       version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
         dataset_Valid_metric = SoccerNetClips(visual_path=args.SoccerNet_path, audio_path=args.audio_path, visual_features=args.features, audio_features=args.audio_features, split=args.split_valid,
-                                                        version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
+                                              version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=val_list)
 
     dataset_Test = SoccerNetClipsTesting(visual_path=args.SoccerNet_path, audio_path=args.audio_path, features=args.features, split=args.split_test,
                                          version=args.version, framerate=args.framerate, window_size=args.window_size, listGames=test_list)
@@ -132,7 +132,8 @@ def main(args):
                                                   num_workers=1, pin_memory=True)
 
         results = testSpotting(test_loader, model=model, model_name=args.model_name,
-                               NMS_window=args.NMS_window, NMS_threshold=args.NMS_threshold)
+                               NMS_window=args.NMS_window, NMS_threshold=args.NMS_threshold,
+                               list_games=test_list,)
         if results is None:
             continue
 
@@ -166,10 +167,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--audio_path',   required=False, type=str,
                         default="/path/to/SoccerNet/",     help='Path for audio SoccerNet')
-    
+
     parser.add_argument('--features',   required=False, type=str,
                         default="ResNET_TF2.npy",     help='Video features')
-    
+
     parser.add_argument('--audio_features',   required=False, type=str,
                         default="224p_VGGish.npy",     help='audio features')
     parser.add_argument('--max_epochs',   required=False, type=int,
@@ -254,7 +255,8 @@ if __name__ == '__main__':
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % args.loglevel)
 
-    os.makedirs(os.path.join(args.base_dir, "models", args.model_name), exist_ok=True)
+    os.makedirs(os.path.join(args.base_dir, "models",
+                args.model_name), exist_ok=True)
     log_path = os.path.join(args.base_dir, "models", args.model_name,
                             datetime.now().strftime('%Y-%m-%d_%H-%M-%S.log'))
     logging.basicConfig(
