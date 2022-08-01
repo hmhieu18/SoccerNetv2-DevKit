@@ -382,7 +382,7 @@ class SoccerNetClipsTesting2(Dataset):
                                 stride=1, off=int(self.window_size_frame/2),
                                 clip_length=self.window_size_frame)
 
-        return self.listGames[index], feat_half1, feat_half2, audio_feat_half1, audio_feat_half2, label_half1, label_half2
+        return self.listGames[index], feat_half1, feat_half2, audio_feat_half1, audio_feat_half2
 
     def __len__(self):
         return len(self.listGames)
