@@ -129,7 +129,7 @@ def main(args):
 
         test_loader = torch.utils.data.DataLoader(dataset_Test,
                                                   batch_size=1, shuffle=False,
-                                                  num_workers=1, pin_memory=True)
+                                                  num_workers=0, pin_memory=True)
 
         results = testSpotting(test_loader, model=model, model_name=args.model_name,
                                NMS_window=args.NMS_window, NMS_threshold=args.NMS_threshold,

@@ -301,10 +301,12 @@ class SoccerNetClipsTesting2(Dataset):
         """
         # Load features
         game = self.listGames[index]
+        
         feats1_filename = os.path.join(
             self.visual_path, game, f"1_{self.visual_features}")
         feats2_filename = os.path.join(
             self.visual_path, game, f"2_{self.visual_features}")
+        
         audio_feats1_filename = os.path.join(
             self.audio_path, game, f"1_{self.audio_features}")
         audio_feats2_filename = os.path.join(
@@ -381,7 +383,7 @@ class SoccerNetClipsTesting2(Dataset):
         audio_feat_half2 = feats2clip(torch.from_numpy(audio_feat_half2),
                                 stride=1, off=int(self.window_size_frame/2),
                                 clip_length=self.window_size_frame)
-                                
+
         return self.listGames[index], feat_half1, feat_half2, audio_feat_half1, audio_feat_half2
 
     def __len__(self):
