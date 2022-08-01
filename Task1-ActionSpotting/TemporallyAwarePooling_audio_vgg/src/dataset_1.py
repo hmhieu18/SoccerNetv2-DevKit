@@ -319,9 +319,15 @@ class SoccerNetClipsTesting2(Dataset):
 
         feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
         feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
-        
-        audio_feat_half1 = np.load(audio_feats1_filename)
-        audio_feat_half2 = np.load(audio_feats2_filename)
+        # check audio_feats1_filename file exists
+        if os.path.exists(audio_feats1_filename):
+            audio_feat_half1 = np.load(audio_feats1_filename)
+        else: 
+            audio_feat_half1 = np.zeros((feat_half1.shape[0], 512))
+        if os.path.exists(audio_feats2_filename):
+            audio_feat_half2 = np.load(audio_feats2_filename)
+        else:
+            audio_feat_half2 = np.zeros((feat_half2.shape[0], 512))
         # print(audio_feat_half1.shape)
         # print(audio_feat_half2.shape)
         audio_feat_half1 = audio_feat_half1.reshape(-1, audio_feat_half1.shape[-1])
