@@ -2,7 +2,7 @@ from SoccerNet.Evaluation.ActionSpotting import evaluate
 PATH_DATASET = "/content/TemporallyAwarePooling_Data/content/SoccerNet/content/TemporallyAwarePooling/SoccerNet_TemporallyAwarePooling"
 PATH_PREDICTIONS = "/content/SoccerNetv2-DevKit/Task1-ActionSpotting/TemporallyAwarePooling_audio_vgg/models/NetVLAD-vgg-4/results_spotting_test.zip"
 results = evaluate(SoccerNet_path=PATH_DATASET, Predictions_path=PATH_PREDICTIONS,
-                   split="test", version=2, prediction_file="results_spotting.json", metric="tight")
+                   split="test", version=2, prediction_file="results_spotting.json", metric="loose")
 
 print("tight Average mAP: ", results["a_mAP"])
 print("tight Average mAP per class: ", results["a_mAP_per_class"])
