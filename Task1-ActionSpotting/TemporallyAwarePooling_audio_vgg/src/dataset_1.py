@@ -264,7 +264,8 @@ class SoccerNetClipsTesting2(Dataset):
         self.visual_path = visual_path
         self.audio_path = audio_path
         self.listGames = listGames
-        self.features = features
+        self.visual_features = features
+        self.audio_features = audio_features
         self.window_size_frame = window_size*framerate
         self.framerate = framerate
         self.version = version
