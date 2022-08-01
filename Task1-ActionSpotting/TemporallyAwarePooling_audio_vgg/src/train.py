@@ -16,8 +16,6 @@ from SoccerNet.Evaluation.utils import AverageMeter, EVENT_DICTIONARY_V2, INVERS
 from SoccerNet.Evaluation.utils import EVENT_DICTIONARY_V1, INVERSE_EVENT_DICTIONARY_V1
 
 
-
-
 def trainer(train_loader,
             val_loader,
             val_metric_loader,
@@ -35,9 +33,11 @@ def trainer(train_loader,
 
     for epoch in range(max_epochs):
         if base_dir is not None:
-            best_model_path = os.path.join(base_dir,"models", model_name, "model.pth.tar")
+            best_model_path = os.path.join(
+                base_dir, "models", model_name, "model.pth.tar")
         else:
-            best_model_path = os.path.join("models", model_name, "model.pth.tar")
+            best_model_path = os.path.join(
+                "models", model_name, "model.pth.tar")
         # train for one epoch
         loss_training = train(train_loader, model, criterion,
                               optimizer, epoch + 1, train=True)
@@ -52,7 +52,8 @@ def trainer(train_loader,
             'best_loss': best_loss,
             'optimizer': optimizer.state_dict(),
         }
-        os.makedirs(os.path.join(base_dir, "models", model_name), exist_ok=True)
+        os.makedirs(os.path.join(base_dir, "models",
+                    model_name), exist_ok=True)
 
         # remember best prec@1 and save checkpoint
         is_better = loss_validation < best_loss
@@ -143,7 +144,7 @@ def train(dataloader,
                 desc += f'(it:{data_time.val:.3f}s) '
                 desc += f'Loss {losses.avg:.4e} '
                 t.set_description(desc)
-                
+
                 del loss, output
 
     return losses.avg
@@ -180,7 +181,6 @@ def test(dataloader, model, model_name):
                 all_labels.append(label.detach().numpy())
                 all_outputs.append(output.cpu().detach().numpy())
 
-
                 batch_time.update(time.time() - end)
                 end = time.time()
 
@@ -205,13 +205,14 @@ def test(dataloader, model, model_name):
 
     return mAP
 
+
 def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, NMS_threshold=0.5, list_games=None):
-    
+
     split = '_'.join(dataloader.dataset.split)
     # print(split)
-    output_results = os.path.join("models", model_name, f"results_spotting_{split}.zip")
+    output_results = os.path.join(
+        "models", model_name, f"results_spotting_{split}.zip")
     output_folder = f"outputs_{split}"
-
 
     if not os.path.exists(output_results) or overwrite:
         batch_time = AverageMeter()
@@ -241,7 +242,8 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 feat_half2 = feat_half2.squeeze(0)
                 audio_feat_half2 = audio_feat_half2.squeeze(0)
                 # label_half2 = label_half2.float().squeeze(0)
-
+                print(game_ID, audio_feat_half1.shape,
+                      audio_feat_half2.shape, feat_half1.shape, feat_half2.shape)
                 # Compute the output for batches of frames
                 BS = 256
                 timestamp_long_half_1 = []
@@ -267,7 +269,6 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                     timestamp_long_half_2.append(output)
                 timestamp_long_half_2 = np.concatenate(timestamp_long_half_2)
 
-
                 timestamp_long_half_1 = timestamp_long_half_1[:, 1:]
                 timestamp_long_half_2 = timestamp_long_half_2[:, 1:]
 
@@ -288,8 +289,6 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-
-
                 def get_spot_from_NMS(Input, window=60, thresh=0.0):
 
                     detections_tmp = np.copy(Input)
@@ -304,8 +303,9 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                         indexes.append(max_index)
                         # detections_NMS[max_index,i] = max_value
 
-                        nms_from = int(np.maximum(-(window/2)+max_index,0))
-                        nms_to = int(np.minimum(max_index+int(window/2), len(detections_tmp)))
+                        nms_from = int(np.maximum(-(window/2)+max_index, 0))
+                        nms_to = int(np.minimum(
+                            max_index+int(window/2), len(detections_tmp)))
                         detections_tmp[nms_from:nms_to] = -1
 
                     return np.transpose([indexes, MaxValues])
@@ -327,26 +327,28 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                             confidence = spot[1]
                             # confidence = predictions_half_1[frame_index, l]
 
-                            seconds = int((frame_index//framerate)%60)
+                            seconds = int((frame_index//framerate) % 60)
                             minutes = int((frame_index//framerate)//60)
 
                             prediction_data = dict()
-                            prediction_data["gameTime"] = str(half+1) + " - " + str(minutes) + ":" + str(seconds)
+                            prediction_data["gameTime"] = str(
+                                half+1) + " - " + str(minutes) + ":" + str(seconds)
                             if dataloader.dataset.version == 2:
                                 prediction_data["label"] = INVERSE_EVENT_DICTIONARY_V2[l]
                             else:
                                 prediction_data["label"] = INVERSE_EVENT_DICTIONARY_V1[l]
-                            prediction_data["position"] = str(int((frame_index/framerate)*1000))
+                            prediction_data["position"] = str(
+                                int((frame_index/framerate)*1000))
                             prediction_data["half"] = str(half+1)
                             prediction_data["confidence"] = str(confidence)
                             json_data["predictions"].append(prediction_data)
-                
-                os.makedirs(os.path.join("models", model_name, output_folder, game_ID), exist_ok=True)
+
+                os.makedirs(os.path.join("models", model_name,
+                            output_folder, game_ID), exist_ok=True)
                 with open(os.path.join("models", model_name, output_folder, game_ID, "results_spotting.json"), 'w') as output_file:
                     json.dump(json_data, output_file, indent=4)
 
-
-        def zipResults(zip_path, target_dir, filename="results_spotting.json"):            
+        def zipResults(zip_path, target_dir, filename="results_spotting.json"):
             zipobj = zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED)
             rootlen = len(target_dir) + 1
             for base, dirs, files in os.walk(target_dir):
@@ -356,19 +358,20 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                         zipobj.write(fn, fn[rootlen:])
 
         # zip folder
-        zipResults(zip_path = output_results,
-                target_dir = os.path.join("models", model_name, output_folder),
-                filename="results_spotting.json")
+        zipResults(zip_path=output_results,
+                   target_dir=os.path.join(
+                       "models", model_name, output_folder),
+                   filename="results_spotting.json")
 
-    if split == "challenge": 
+    if split == "challenge":
         print("Visit eval.ai to evalaute performances on Challenge set")
         return None
-        
-    results =  evaluate(SoccerNet_path=dataloader.dataset.visual_path, 
-                 Predictions_path=output_results,
-                 split="test",
-                 prediction_file="results_spotting.json", 
-                 version=dataloader.dataset.version,
-                 list_games=list_games,)
+
+    results = evaluate(SoccerNet_path=dataloader.dataset.visual_path,
+                       Predictions_path=output_results,
+                       split="test",
+                       prediction_file="results_spotting.json",
+                       version=dataloader.dataset.version,
+                       list_games=list_games,)
 
     return results
