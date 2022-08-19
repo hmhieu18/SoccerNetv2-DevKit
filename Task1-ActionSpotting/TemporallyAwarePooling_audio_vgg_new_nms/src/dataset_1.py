@@ -4,6 +4,7 @@ import numpy as np
 import random
 import os
 import time
+import skimage.measure
 
 
 from tqdm import tqdm
@@ -319,6 +320,9 @@ class SoccerNetClipsTesting2(Dataset):
 
         feat_half1 = feat_half1.reshape(-1, feat_half1.shape[-1])
         feat_half2 = feat_half2.reshape(-1, feat_half2.shape[-1])
+
+        feat_half1 = skimage.measure.block_reduce(feat_half1, (1,4), np.max)
+        feat_half2 = skimage.measure.block_reduce(feat_half2, (1,4), np.max)
         # check audio_feats1_filename file exists
         if os.path.exists(audio_feats1_filename):
             audio_feat_half1 = np.load(audio_feats1_filename)
