@@ -318,15 +318,24 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
 
                     return np.transpose([indexes, MaxValues])
 
+                    
+                    
+                    
                 framerate = dataloader.dataset.framerate
-                get_spot = get_spot_from_NMS
+                get_spot = get_spot_from_NMS #get_centre_frame
 
                 json_data = dict()
                 json_data["UrlLocal"] = game_ID
                 json_data["predictions"] = list()
-
+                print("Game ID: ", game_ID)
+                for tl in spotting_grountruth:
+                    print("label: ", tl)
                 for half, timestamp in enumerate([timestamp_long_half_1, timestamp_long_half_2]):
+      #          for half, timestamp in enumerate([timestamp_long_half_1]):
+
                     for l in range(dataloader.dataset.num_classes):
+                        print("************************* Class = ", l)
+                        print("timestamp shape: ", timestamp.shape)
                         spots = get_spot(
                             timestamp[:, l], timestamp[:,dataloader.dataset.num_classes:], window=NMS_window*framerate, thresh=NMS_threshold)
                         for spot in spots:
