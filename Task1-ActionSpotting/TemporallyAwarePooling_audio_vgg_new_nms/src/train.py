@@ -306,9 +306,9 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                         max_value = np.max(detections_tmp)
                         max_index = np.argmax(detections_tmp)
                         print("Max index", max_index)
-                        if Input2[max_index, :]:
+                        if Input2[max_index]:
                             print("CENTERING")
-                            max_index2 = np.argmax(Input2[max_index, :])
+                            max_index2 = np.argmax(Input2[max_index])
 
                             max_index3 = max_index - \
                                 int(dataloader.dataset.window_size_frame/2)+max_index2
