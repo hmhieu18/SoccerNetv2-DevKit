@@ -237,11 +237,11 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 game_ID = game_ID[0]
                 feat_half1 = feat_half1.squeeze(0)
                 audio_feat_half1 = audio_feat_half1.squeeze(0)
-                # label_half1 = label_half1.float().squeeze(0)
+                label_half1 = label_half1.float().squeeze(0)
 
                 feat_half2 = feat_half2.squeeze(0)
                 audio_feat_half2 = audio_feat_half2.squeeze(0)
-                # label_half2 = label_half2.float().squeeze(0)
+                label_half2 = label_half2.float().squeeze(0)
                 # print(game_ID, audio_feat_half1.shape,
                 #       audio_feat_half2.shape, feat_half1.shape, feat_half2.shape)
                 # Compute the output for batches of frames
@@ -272,10 +272,10 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 timestamp_long_half_1 = timestamp_long_half_1[:, 1:]
                 timestamp_long_half_2 = timestamp_long_half_2[:, 1:]
 
-                # spotting_grountruth.append(torch.abs(label_half1))
-                # spotting_grountruth.append(torch.abs(label_half2))
-                # spotting_grountruth_visibility.append(label_half1)
-                # spotting_grountruth_visibility.append(label_half2)
+                spotting_grountruth.append(torch.abs(label_half1))
+                spotting_grountruth.append(torch.abs(label_half2))
+                spotting_grountruth_visibility.append(label_half1)
+                spotting_grountruth_visibility.append(label_half2)
                 spotting_predictions.append(timestamp_long_half_1)
                 spotting_predictions.append(timestamp_long_half_2)
 
