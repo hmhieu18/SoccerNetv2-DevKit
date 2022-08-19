@@ -303,18 +303,27 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                         # Get the max remaining index and value
                         max_value = np.max(detections_tmp)                        
                         max_index = np.argmax(detections_tmp)
-                        
-                        max_index2 = np.argmax(Input2[max_index,:])
+                        if Input2[max_index,:]:
+                            max_index2 = np.argmax(Input2[max_index,:])
 
-                        max_index3 = max_index-int(dataloader.dataset.window_size_frame/2)+max_index2
-                        MaxValues.append(max_value)                        
-                        indexes.append(max_index3)
-                        # detections_NMS[max_index,i] = max_value
+                            max_index3 = max_index-int(dataloader.dataset.window_size_frame/2)+max_index2
+                            MaxValues.append(max_value)                        
+                            indexes.append(max_index3)
+                            # detections_NMS[max_index,i] = max_value
 
-                        nms_from = int(np.maximum(-(win_pre)+max_index3,0))
-                        nms_to = int(np.minimum(max_index3+int(win_post), len(detections_tmp)))
-                        detections_tmp[max_index] = -1                        
-                        detections_tmp[nms_from:nms_to] = -1
+                            nms_from = int(np.maximum(-(win_pre)+max_index3,0))
+                            nms_to = int(np.minimum(max_index3+int(win_post), len(detections_tmp)))
+                            detections_tmp[max_index] = -1                        
+                            detections_tmp[nms_from:nms_to] = -1
+                        else: 
+                            MaxValues.append(max_value)
+                            indexes.append(max_index)
+                            # detections_NMS[max_index,i] = max_value
+
+                            nms_from = int(np.maximum(-(window/2)+max_index,0))
+                            nms_to = int(np.minimum(max_index+int(window/2), len(detections_tmp)))
+                            detections_tmp[nms_from:nms_to] = -1
+
 
                     return np.transpose([indexes, MaxValues])
 
