@@ -230,7 +230,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
 
         end = time.time()
         with tqdm(dataloader) as t:
-            for i, (game_ID, feat_half1, feat_half2, audio_feat_half1, audio_feat_half2) in enumerate(t):
+            for i, (game_ID, feat_half1, feat_half2, audio_feat_half1, audio_feat_half2, label_half1, label_half2) in enumerate(t):
                 data_time.update(time.time() - end)
 
                 # Batch size of 1
