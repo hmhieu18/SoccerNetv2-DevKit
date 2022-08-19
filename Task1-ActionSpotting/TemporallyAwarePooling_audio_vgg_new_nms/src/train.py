@@ -289,7 +289,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 desc += f'(it:{data_time.val:.3f}s) '
                 t.set_description(desc)
 
-                def get_spot_from_NMS(Input, Input2, labels, class_value= 0, window=60, thresh=0.0):
+                def get_spot_from_NMS(Input, Input2, window=60, thresh=0.0):
 
                     detections_tmp = np.copy(Input)
                     indexes = []
@@ -328,7 +328,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 for half, timestamp in enumerate([timestamp_long_half_1, timestamp_long_half_2]):
                     for l in range(dataloader.dataset.num_classes):
                         spots = get_spot(
-                            timestamp[:, l], timestamp[:, l], spotting_grountruth[i], l, window=NMS_window*framerate, thresh=NMS_threshold)
+                            timestamp[:, l], timestamp[:,dataloader.dataset.num_classes:], window=NMS_window*framerate, thresh=NMS_threshold)
                         for spot in spots:
                             # print("spot", int(spot[0]), spot[1], spot)
                             frame_index = int(spot[0])
