@@ -295,47 +295,49 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                     indexes = []
                     MaxValues = []
 
-                    win_pre  = int(window/2)
+                    win_pre = int(window/2)
                     win_post = int(window/2)
 
                     while(np.max(detections_tmp) >= thresh):
 
                         # Get the max remaining index and value
                         print("Input2: ", Input2.shape)
-                        max_value = np.max(detections_tmp)                        
+                        print("Input2", Input2)
+                        max_value = np.max(detections_tmp)
                         max_index = np.argmax(detections_tmp)
                         print("Max index", max_index)
-                        if Input2[max_index,:]:
+                        if Input2[max_index, :]:
                             print("CENTERING")
-                            max_index2 = np.argmax(Input2[max_index,:])
+                            max_index2 = np.argmax(Input2[max_index, :])
 
-                            max_index3 = max_index-int(dataloader.dataset.window_size_frame/2)+max_index2
-                            MaxValues.append(max_value)                        
+                            max_index3 = max_index - \
+                                int(dataloader.dataset.window_size_frame/2)+max_index2
+                            MaxValues.append(max_value)
                             indexes.append(max_index3)
                             # detections_NMS[max_index,i] = max_value
 
-                            nms_from = int(np.maximum(-(win_pre)+max_index3,0))
-                            nms_to = int(np.minimum(max_index3+int(win_post), len(detections_tmp)))
-                            detections_tmp[max_index] = -1                        
+                            nms_from = int(
+                                np.maximum(-(win_pre)+max_index3, 0))
+                            nms_to = int(np.minimum(
+                                max_index3+int(win_post), len(detections_tmp)))
+                            detections_tmp[max_index] = -1
                             detections_tmp[nms_from:nms_to] = -1
-                        else: 
+                        else:
                             print("NOT CENTERING")
                             MaxValues.append(max_value)
                             indexes.append(max_index)
                             # detections_NMS[max_index,i] = max_value
 
-                            nms_from = int(np.maximum(-(window/2)+max_index,0))
-                            nms_to = int(np.minimum(max_index+int(window/2), len(detections_tmp)))
+                            nms_from = int(
+                                np.maximum(-(window/2)+max_index, 0))
+                            nms_to = int(np.minimum(
+                                max_index+int(window/2), len(detections_tmp)))
                             detections_tmp[nms_from:nms_to] = -1
-
 
                     return np.transpose([indexes, MaxValues])
 
-                    
-                    
-                    
                 framerate = dataloader.dataset.framerate
-                get_spot = get_spot_from_NMS #get_centre_frame
+                get_spot = get_spot_from_NMS  # get_centre_frame
 
                 json_data = dict()
                 json_data["UrlLocal"] = game_ID
@@ -344,13 +346,13 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 for tl in spotting_grountruth:
                     print("label: ", tl)
                 for half, timestamp in enumerate([timestamp_long_half_1, timestamp_long_half_2]):
-      #          for half, timestamp in enumerate([timestamp_long_half_1]):
+                  #          for half, timestamp in enumerate([timestamp_long_half_1]):
 
                     for l in range(dataloader.dataset.num_classes):
                         print("************************* Class = ", l)
                         print("timestamp shape: ", timestamp.shape)
                         spots = get_spot(
-                            timestamp[:, l], timestamp[:,dataloader.dataset.num_classes:], window=NMS_window*framerate, thresh=NMS_threshold)
+                            timestamp[:, l], timestamp[:, dataloader.dataset.num_classes:], window=NMS_window*framerate, thresh=NMS_threshold)
                         for spot in spots:
                             # print("spot", int(spot[0]), spot[1], spot)
                             frame_index = int(spot[0])
