@@ -266,8 +266,8 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                     feat = feat_half2[start_frame:end_frame].cuda()
                     audio_feat = audio_feat_half2[start_frame:end_frame].cuda()
                     output = model(feat, audio_feat).cpu().detach().numpy()
-                    print(output.shape)
-                    input("Press Enter to continue...")
+                    # print(output.shape)
+                    # input("Press Enter to continue...")
                     timestamp_long_half_2.append(output)
                 timestamp_long_half_2 = np.concatenate(timestamp_long_half_2)
 
@@ -354,7 +354,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                         print("************************* Class = ", l)
                         print("timestamp shape: ", timestamp.shape)
                         spots = get_spot(
-                            timestamp[:, l], timestamp[:, dataloader.dataset.num_classes-1:], window=NMS_window*framerate, thresh=NMS_threshold)
+                            timestamp[:, l], timestamp[:, l:l], window=NMS_window*framerate, thresh=NMS_threshold)
                         for spot in spots:
                             # print("spot", int(spot[0]), spot[1], spot)
                             frame_index = int(spot[0])
