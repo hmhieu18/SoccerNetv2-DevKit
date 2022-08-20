@@ -266,6 +266,8 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                     feat = feat_half2[start_frame:end_frame].cuda()
                     audio_feat = audio_feat_half2[start_frame:end_frame].cuda()
                     output = model(feat, audio_feat).cpu().detach().numpy()
+                    print(output.shape)
+                    input("Press Enter to continue...")
                     timestamp_long_half_2.append(output)
                 timestamp_long_half_2 = np.concatenate(timestamp_long_half_2)
 
