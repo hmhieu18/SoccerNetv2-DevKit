@@ -1,5 +1,5 @@
 from SoccerNet.Evaluation.ActionSpotting import evaluate
-results = evaluate(SoccerNet_path="/content/SoccerNet/TemporallyAwarePooling_Data/content/SoccerNet/content/TemporallyAwarePooling/SoccerNet_TemporallyAwarePooling",
+results = evaluate(SoccerNet_path="/content/TemporallyAwarePooling_Data/content/SoccerNet/content/TemporallyAwarePooling/SoccerNet_TemporallyAwarePooling",
                    Predictions_path="/content/SoccerNetv2-DevKit/Task1-ActionSpotting/TemporallyAwarePooling_audio_vgg_new_nms/models/NetVLAD-vgg-4/outputs_test",
                    split="test", version=2, prediction_file="results_spotting.json", metric="tight")
 
