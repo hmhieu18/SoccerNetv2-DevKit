@@ -303,13 +303,13 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                     while(np.max(detections_tmp) >= thresh):
 
                         # Get the max remaining index and value
-                        print("Input2: ", Input2.shape)
-                        print("Input2", Input2)
+                        # print("Input2: ", Input2.shape)
+                        # print("Input2", Input2)
                         max_value = np.max(detections_tmp)
                         max_index = np.argmax(detections_tmp)
-                        print("Max index", max_index)
-                        if Input2[max_index, :]:
-                            print("CENTERING")
+                        # print("Max index", max_index)
+                        if False:
+                            # print("CENTERING")
                             max_index2 = np.argmax(Input2[max_index, :])
 
                             max_index3 = max_index - \
@@ -325,7 +325,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                             detections_tmp[max_index] = -1
                             detections_tmp[nms_from:nms_to] = -1
                         else:
-                            print("NOT CENTERING")
+                            # print("NOT CENTERING")
                             MaxValues.append(max_value)
                             indexes.append(max_index)
                             # detections_NMS[max_index,i] = max_value
@@ -344,7 +344,7 @@ def testSpotting(dataloader, model, model_name, overwrite=True, NMS_window=30, N
                 json_data = dict()
                 json_data["UrlLocal"] = game_ID
                 json_data["predictions"] = list()
-                print("Game ID: ", game_ID)
+                # print("Game ID: ", game_ID)
                 for tl in spotting_grountruth:
                     print("label: ", tl)
                 for half, timestamp in enumerate([timestamp_long_half_1, timestamp_long_half_2]):
