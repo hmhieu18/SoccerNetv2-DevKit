@@ -4,7 +4,7 @@ import numpy as np
 import random
 import os
 import time
-import skimage.measure
+# import skimage.measure
 
 
 from tqdm import tqdm
